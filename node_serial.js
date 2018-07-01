@@ -7,6 +7,9 @@ var SerialPort = require('serialport');
 //"/dev/ttyS0" is a name of serial port GPIO14 and GPIO15 for RASPI Zero W, and the baudrate is 9600
 //var port = new SerialPort('/dev/ttyUSB0', function (err) { baudRate: 19200 });
 
+// File operation
+var fs = require('fs');
+
 // Serial port settings
 var port = new SerialPort('COM8', { 
   baudRate: 19200,
@@ -33,6 +36,10 @@ port.on('open', function () {
 //will be executed if there is a serial data on a stream (receiving serial data)
 port.on('data', function (data) {
   console.log(data.toString());
+  fs.appendFile('serial_data.txt', data.toString(), function(err){
+    if(err) throw err;
+    // console.log('saved');
+  })
 });
 
 //Running Forever
